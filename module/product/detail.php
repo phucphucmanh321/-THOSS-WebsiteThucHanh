@@ -167,7 +167,7 @@
                                     class="price product-price-old">0₫</del> </span> <!-- Giá gốc -->
                         </div>
                         <div class="form-product">
-                            <form enctype="multipart/form-data"
+                            <form
                                 id="add-to-cart-form"
                                 action="index.php?mod=cart&ac=add-to-cart"
                                 method="post"
@@ -192,7 +192,7 @@
                                     <div data-value="S"
                                         class="swatch-element S soldout"> <input id="swatch-1-S"
                                             type="radio"
-                                            name="sideId"
+                                            name="sizeId"
                                             checked
                                             value="1" /> <label for="swatch-1-S"> S <img
                                                 class="crossed-out"
@@ -201,7 +201,7 @@
                                     <div data-value="M"
                                         class="swatch-element M soldout"> <input id="swatch-1-M"
                                             type="radio"
-                                            name="sideId"
+                                            name="sizeId"
                                             value="2" /> <label for="swatch-1-M"> M <img
                                                 class="crossed-out"
                                                 src="//bizweb.dktcdn.net/100/419/543/themes/810317/assets/soldout.png?1716534891837"
@@ -209,7 +209,7 @@
                                     <div data-value="L"
                                         class="swatch-element L soldout"> <input id="swatch-1-L"
                                             type="radio"
-                                            name="sideId"
+                                            name="sizeId"
                                             value="3" /> <label for="swatch-1-L"> L <img
                                                 class="crossed-out"
                                                 src="//bizweb.dktcdn.net/100/419/543/themes/810317/assets/soldout.png?1716534891837"
@@ -217,7 +217,7 @@
                                     <div data-value="XL"
                                         class="swatch-element XL soldout"> <input id="swatch-1-XL"
                                             type="radio"
-                                            name="sideId"
+                                            name="sizeId"
                                             value="4" /> <label for="swatch-1-XL"> XL <img
                                                 class="crossed-out"
                                                 src="//bizweb.dktcdn.net/100/419/543/themes/810317/assets/soldout.png?1716534891837"
@@ -246,7 +246,7 @@
                                         }
 
                                         // Load size mặc định (radio checked)
-                                        let first = $('input[name="sideId"]:checked');
+                                        let first = $('input[name="sizeId"]:checked');
                                         if (first.length) {
                                             updateStock(
                                                 first.val(),
@@ -255,7 +255,7 @@
                                         }
 
                                         // Khi click size
-                                        $('input[name="sideId"]').on('change', function () {
+                                        $('input[name="sizeId"]').on('change', function () {
                                             let sizeId = $(this).val();
                                             let sizeName = $(this).closest('.swatch-element').data('value');
                                             updateStock(sizeId, sizeName);
@@ -266,9 +266,9 @@
 
                                 
                                 <script>
-                                    // Lấy giới hạn tồn kho theo size đang được chọn (radio sideId)
+                                    // Lấy giới hạn tồn kho theo size đang được chọn (radio sizeId)
                                     // Nếu không có tồn kho thì mặc định là 1
-                                   let maxQty = productStock[$("input[name='sideId']:checked").val()] ?? 1;
+                                   let maxQty = productStock[$("input[name='sizeId']:checked").val()] ?? 1;
 
                                     // Hàm clamp để kiểm soát giá trị số lượng trong giới hạn cho phép
                                     function clamp(v){
@@ -294,7 +294,7 @@
                                     }
 
                                     // reset số lượng về 1 khi đổi size
-                                    $("input[name='sideId']").change(function(){
+                                    $("input[name='sizeId']").change(function(){
                                         maxQty = productStock[$(this).val()] ?? 1;
                                         $('#qty').val(1);          // reset về 1
                                     });
@@ -370,15 +370,22 @@
                                                     <p>Thành tiền: <span class="total-price"></span></p>
                                                 </div>
                                             </div>
-                                            <div class="tfoot-popup-2 clearfix"> <a class="button btn-proceed-checkout"
+                                            <div class="tfoot-popup-2 clearfix"> 
+                                                <a class="button btn-proceed-checkout"
                                                     title="Tiến hành đặt hàng"
-                                                    href="/checkout"><span>Tiến hành đặt hàng</span></a> <a
+                                                    href="/checkout"><span>Tiến hành đặt hàng</span>
+                                                </a> 
+                                                <a
                                                     class="button btn-continue"
                                                     title="Tiếp tục mua hàng"
-                                                    onclick="$('#popup-cart').modal('hide');"><span><span><i
+                                                    onclick="$('#popup-cart').modal('hide');">
+                                                    <span><span>
+                                                        <i
                                                                 class="fa fa-caret-left"
-                                                                aria-hidden="true"></i> Tiếp tục mua
-                                                            hàng</span></span></a> </div>
+                                                                aria-hidden="true"></i> 
+                                                                Tiếp tục mua hàng</span>
+                                                            </span></a> 
+                                                        </div>
                                         </div>
                                     </div> <a title="Close"
                                         class="quickview-close close-window"

@@ -30,6 +30,9 @@
             case "product":
                 include "module/product/index.php";
                 break;
+            case "cart":
+                include "module/cart/index.php";
+                break;
             default:
                 include "module/home/index.php";
                 break;
