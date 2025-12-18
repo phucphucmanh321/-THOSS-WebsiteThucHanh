@@ -301,6 +301,55 @@
                                 </script>
 
 
+                                <script>
+                                    function updateStockDisplay(){
+
+                                        // lấy size đang chọn
+                                        let sizeId = $("input[name='sideId']:checked").val();
+
+                                        // tồn kho size đó
+                                        let stock = productStock[sizeId] ?? 0;
+
+                                        // reset số lượng về 1
+                                        $('#qty').val(1);
+
+                                        maxQty = stock;
+
+                                        // nếu hết hàng → disable input + nút
+                                        if(stock < 1){
+
+                                            $('#qty')
+                                                .val(0)
+                                                .prop('disabled', true);
+
+                                            $('.qtyplus, .qtyminus').hide();
+
+                                            $('#btnAddCart')
+                                                .prop('disabled', true)
+                                                .hide();
+
+                                        } else {
+
+                                            $('#qty')
+                                                .val(1)
+                                                .prop('disabled', false);
+
+                                            $('.qtyplus, .qtyminus').show();
+
+                                            $('#btnAddCart')
+                                                .prop('disabled', false)
+                                                .show();
+                                        }
+                                    }
+
+                                    $("input[name='sideId']").change(function(){
+                                        updateStockDisplay();
+                                    });
+
+                                    updateStockDisplay();
+                                </script>
+
+
 
                                 <div class="form-group form-groupx form-detail-action clearfix "> 
                                     <label class="hidden">Số lượng: </label>
@@ -329,9 +378,11 @@
                                     
                                     <input type="hidden" name='name' value="<?= $item["name"] ?> " />
                                     <input type="hidden" value="<?= $item['id'] ?>" name="id" />
-                                    <button type="submit"
+                                    <button id="btnAddCart"
+                                        type="submit"
                                         class="btn btn-lg btn-primary btn-cart btn-cart2"
-                                        title="Cho vào giỏ hàng"> <span>Thêm vào giỏ hàng</span> 
+                                        title="Cho vào giỏ hàng">
+                                        <span>Thêm vào giỏ hàng</span>
                                     </button>
                                 </div>
                             </form>
