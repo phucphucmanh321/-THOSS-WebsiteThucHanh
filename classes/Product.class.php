@@ -28,4 +28,13 @@ class Product extends Db
 			where name like :name";
 		return $this->select($sql,[':name' => '%'.$name.'%'])??null;
 	}
+	public function getStockByProductId($productId)
+	{
+		$sql = "SELECT ps.size_id, ps.quantity
+				FROM product_stock ps
+				WHERE ps.product_id = :product_id";
+
+		return $this->select($sql, [':product_id' => $productId]);
+	}
+
 }
