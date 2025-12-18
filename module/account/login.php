@@ -79,7 +79,7 @@
 
                             <div class="pull-xs-left" style="margin-top: 25px;">
                                 <input class="btn btn-style btn-primary" type="submit" value="Đăng nhập">
-                                <a href="/account/register" class="btn-link-style btn-register" style="margin-left: 20px;text-decoration: underline; ">Đăng ký</a>
+                                <a href="index.php?mod=account&ac=register" class="btn-link-style btn-register" style="margin-left: 20px;text-decoration: underline;">Đăng ký</a>
                             </div>
                         </div>
                     </form>
