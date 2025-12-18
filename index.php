@@ -35,6 +35,33 @@
                 break;
         }
 	?>
+    
+     <?php
+		$mod = getIndex("mod","home");
+		$query = getIndex("query","");
+        if($query!=""){
+            $mod = 'product';
+        }
+        
+        switch($mod)
+        {
+            case "account":
+                include "module/account/index.php";
+                break;
+            case "product":
+                include "module/product/index.php";
+                break;
+            case "cart":
+                include "module/cart/index.php";
+                break;
+            case "labs":
+                include "module/labs/index.php";
+                break;
+            default:
+                include "module/home/index.php";
+                break;
+        }
+	?>
 </div>
 
 <script>
