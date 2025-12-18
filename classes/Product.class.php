@@ -30,11 +30,10 @@ class Product extends Db
 	}
 	public function getStockByProductId($productId)
 	{
-		$sql = "SELECT ps.size_id, ps.quantity
-				FROM product_stock ps
-				WHERE ps.product_id = :product_id";
+    	$sql = "select ps.size_id, ps.quantity
+            from product_stock ps
+            where ps.product_id = :product_id";
 
-		return $this->select($sql, [':product_id' => $productId]);
+    	return $this->select($sql, [':product_id' => $productId]);
 	}
-
 }
