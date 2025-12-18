@@ -32,6 +32,9 @@ include_once "include/header.php";
         case "cart":
             include "module/cart/index.php";
             break;
+        case "account":
+            include "module/account/index.php";
+            break;
         default:
             include "module/home/index.php";
             break;
