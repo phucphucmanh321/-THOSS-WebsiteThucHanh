@@ -27,6 +27,9 @@
         
         switch($mod)
         {
+            case "product":
+                include "module/product/index.php";
+                break;
             default:
                 include "module/home/index.php";
                 break;
