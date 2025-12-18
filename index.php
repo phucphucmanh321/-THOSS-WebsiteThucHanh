@@ -24,25 +24,12 @@
 <div class="contain">
     <?php
 		$mod = getIndex("mod","home");
-        
-        switch($mod)
-        {
-            case "product":
-                include "module/product/index.php";
-                break;
-            default:
-                include "module/home/index.php";
-                break;
-        }
-	?>
-    
-     <?php
-		$mod = getIndex("mod","home");
-		$query = getIndex("query","");
+        $query = getIndex("query","");
+
         if($query!=""){
             $mod = 'product';
         }
-        
+
         switch($mod)
         {
             case "account":
@@ -62,6 +49,7 @@
                 break;
         }
 	?>
+    
 </div>
 
 <script>
