@@ -1,5 +1,15 @@
 <?php
-// Hàm xử lý lưu vào Session (code cũ của bạn)
+// Sử dụng hàm postIndex để tránh lỗi Undefined Index nếu dữ liệu từ form bị thiếu
+$id          = postIndex('id');
+$name        = postIndex('name');
+$price       = postIndex('price');
+$sizeId      = postIndex('sizeId');
+$description = postIndex('description');
+
+// Kiểm tra linh hoạt cả 'quantity' hoặc 'qty' từ form gửi qua
+$qty = postIndex('quantity', postIndex('qty', 1));
+
+// Hàm xử lý lưu vào Session (giữ nguyên logic của bạn)
 function addToCartSession($id, $name, $description, $price, $sizeId, $qty = 1)
 {
     $size = new Size();
@@ -24,24 +34,18 @@ function addToCartSession($id, $name, $description, $price, $sizeId, $qty = 1)
     }
 }
 
-// Lấy dữ liệu từ POST
-$id          = $_POST['id'];
-$name        = $_POST['name'];
-$price       = $_POST['price'];
-$sizeId      = $_POST['sizeId'];
-$description = $_POST['description'];
-$qty         = $_POST['quantity'];
-
-// KIỂM TRA TRẠNG THÁI ĐĂNG NHẬP
-if (isset($_SESSION['login-session'])) {
-    // Nếu đã đăng nhập -> Lưu vào Database thông qua lớp Cart
-    $userId = $_SESSION['login-session']['userId'];
-    $cart = new Cart();
-    $cart->add($userId, $id, $qty, $sizeId);
-} else {
-    // Nếu chưa đăng nhập -> Lưu vào Session như cũ
-    addToCartSession($id, $name, $description, $price, $sizeId, $qty);
+// Chỉ xử lý nếu có ID sản phẩm hợp lệ
+if ($id) {
+    if (isset($_SESSION['login-session'])) {
+        // Nếu đã đăng nhập -> Lưu vào Database
+        $userId = $_SESSION['login-session']['userId'];
+        $cart = new Cart();
+        $cart->add($userId, $id, $qty, $sizeId);
+    } else {
+        // Nếu chưa đăng nhập -> Lưu vào Session
+        addToCartSession($id, $name, $description, $price, $sizeId, $qty);
+    }
 }
 
-// Sau khi xử lý xong thì chuyển hướng về trang giỏ hàng
+// Chuyển hướng về trang giỏ hàng bằng hàm redirect đã được tối ưu
 redirect('index.php?mod=cart');
