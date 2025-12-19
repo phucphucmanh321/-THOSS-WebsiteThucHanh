@@ -266,42 +266,76 @@
 
                                 
                                 <script>
-                                    // Lấy giới hạn tồn kho theo size đang được chọn (radio sideId)
-                                    // Nếu không có tồn kho thì mặc định là 1
-                                   let maxQty = productStock[$("input[name='sideId']:checked").val()] ?? 1;
+                                    let maxQty = productStock[$("input[name='sideId']:checked").val()] ?? 1;
 
-                                    // Hàm clamp để kiểm soát giá trị số lượng trong giới hạn cho phép
-                                    function clamp(v){
-                                        v = parseInt(v);           
-                                        if(isNaN(v)) v = 1;        
-                                        if(v < 1) v = 1;           
-                                        if(v > maxQty) v = maxQty; 
-                                        return v;                  
+                                    function clampQty(v){
+                                        v = parseInt(v);
+
+                                        if (isNaN(v)) return 1;
+                                        if (v < 1) return 1;
+                                        if (v > maxQty) return maxQty;
+                                        return v;
                                     }
 
-                                    // Hàm cộng hoặc trừ số lượng
-                                    function changeQty(step){
-                                        let v = parseInt($('#qty').val()) || 1;
-                                        $('#qty').val(clamp(v + step));
-                                    }
+                                    // Khi gõ vào input
+                                    $("#qty").on("input", function(){
 
-                                    // Xử lý khi user nhập số trực tiếp từ bàn phím
-                                    function fixQty(){
-                                        let v = $('#qty').val();
-                                        v = v.replace(/\D+/g, '');
-                                        if(v === "") v = 1;
-                                        $('#qty').val(clamp(v));
-                                    }
+                                        // chặn chữ
+                                        this.value = this.value.replace(/\D+/g, "");
 
-                                    // reset số lượng về 1 khi đổi size
+                                        // clamp giá trị
+                                        this.value = clampQty(this.value);
+                                    });
+
+                                    // Khi nhấn phím trong input
+                                    $("#qty").on("keypress", function(e){
+
+                                        // Ngăn chữ
+                                        if (e.which < 48 || e.which > 57){
+                                            e.preventDefault();
+                                            return false;
+                                        }
+                                    });
+
+                                    $(".qtyplus").click(function(){
+                                        let v = parseInt($("#qty").val()) || 1;
+                                        $("#qty").val(clampQty(v + 1));
+                                    });
+
+                                    $(".qtyminus").click(function(){
+                                        let v = parseInt($("#qty").val()) || 1;
+                                        $("#qty").val(clampQty(v - 1));
+                                    });
+
                                     $("input[name='sideId']").change(function(){
                                         maxQty = productStock[$(this).val()] ?? 1;
-                                        $('#qty').val(1);          // reset về 1
+                                        $("#qty").val(1);
+                                        updateStockDisplay();
+                                    });
+
+                                    // kiểm tra lần cuối khi submit
+                                    $("#add-to-cart-form").on("submit", function(e){
+
+                                        let raw = $("#qty").val();
+
+                                        // xóa toàn bộ chữ nếu còn sót
+                                        raw = raw.replace(/\D+/g, "");
+                                        $("#qty").val(raw);
+
+                                        let v = parseInt(raw);
+
+                                        if (!v || v < 1 || v > maxQty){
+                                            alert("Số lượng không hợp lệ!");
+                                            e.preventDefault();
+                                            return false;
+                                        }
                                     });
                                 </script>
 
 
+
                                 <script>
+
                                     function updateStockDisplay(){
 
                                         // lấy size đang chọn
@@ -311,43 +345,38 @@
                                         let stock = productStock[sizeId] ?? 0;
 
                                         // reset số lượng về 1
-                                        $('#qty').val(1);
+                                        $('#qty').val( stock > 0 ? 1 : 0 );
 
                                         maxQty = stock;
 
-                                        // nếu hết hàng → disable input + nút
                                         if(stock < 1){
 
-                                            $('#qty')
-                                                .val(0)
-                                                .prop('disabled', true);
-
+                                            // hết hàng
+                                            $('#qty').prop('disabled',true);
                                             $('.qtyplus, .qtyminus').hide();
-
-                                            $('#btnAddCart')
-                                                .prop('disabled', true)
-                                                .hide();
+                                            $('#btnAddCart').prop('disabled',true).hide();
 
                                         } else {
 
-                                            $('#qty')
-                                                .val(1)
-                                                .prop('disabled', false);
-
+                                            // còn hàng
+                                            $('#qty').prop('disabled',false);
                                             $('.qtyplus, .qtyminus').show();
-
-                                            $('#btnAddCart')
-                                                .prop('disabled', false)
-                                                .show();
+                                            $('#btnAddCart').prop('disabled',false).show();
                                         }
                                     }
 
+                                    // chạy khi đổi size
                                     $("input[name='sideId']").change(function(){
                                         updateStockDisplay();
                                     });
 
-                                    updateStockDisplay();
+                                    // ⭐ chạy ngay khi trang load → QUAN TRỌNG
+                                    $(document).ready(function(){
+                                        updateStockDisplay();
+                                    });
+
                                 </script>
+
 
 
 
