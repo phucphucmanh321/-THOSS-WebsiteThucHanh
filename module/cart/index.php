@@ -26,3 +26,12 @@ if ($ac == "add-to-cart") {
 if ($ac == "checkout") {
 	include ROOT . "/module/cart/checkout.php";
 }
+
+// THÊM 2 DÒNG NÀY VÀO:
+if ($ac == "saveOrder") {
+	include ROOT . "/module/cart/saveOrder.php";
+}
+
+if ($ac == "invoice") {
+	include ROOT . "/module/cart/invoice.php";
+}
