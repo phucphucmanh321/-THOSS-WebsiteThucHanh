@@ -1,9 +1,10 @@
 <?php
-    $list = $_SESSION['cart'];
-    $sum = 0;
+$list = $_SESSION['cart'];
+$sum = 0;
 ?>
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,22 +13,27 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; }
-        .custom-radio:checked + div {
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .custom-radio:checked+div {
             border-color: #000;
             background-color: #f9fafb;
         }
-        .custom-radio:checked + div .radio-dot {
+
+        .custom-radio:checked+div .radio-dot {
             border-color: #000;
             background-color: #000;
             box-shadow: inset 0 0 0 3px #fff;
         }
     </style>
 </head>
+
 <body class="bg-white text-gray-700">
 
     <div class="flex flex-col lg:flex-row min-h-screen">
-        
+
         <div class="w-full lg:w-3/5 px-4 py-8 lg:px-16 lg:py-12 order-2 lg:order-1">
             <div class="mb-8">
                 <a href="/" class="inline-block">
@@ -41,16 +47,16 @@
                 <span class="font-medium text-gray-900">Thông tin giao hàng</span>
             </nav>
 
-            <form action="#" method="POST" class="space-y-8">
-                
+            <form action="index.php?mod=cart&ac=saveOrder" method="POST" class="space-y-8">
+
                 <section>
                     <h2 class="text-xl font-semibold text-gray-900 mb-4">Thông tin giao hàng</h2>
-                    
+
                     <div class="space-y-4">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-1">Họ và tên</label>
-                                <input type="text" name="name" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-black focus:border-black transition outline-none" placeholder="Ví dụ: Nguyễn Văn A">
+                                <input type="text" name="fullname" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-black focus:border-black transition outline-none" placeholder="Ví dụ: Nguyễn Văn A">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-1">Số điện thoại</label>
@@ -68,46 +74,16 @@
                             <input type="text" name="address" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-black focus:border-black transition outline-none" placeholder="Số nhà, tên đường...">
                         </div>
 
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <div class="relative">
-                                <select class="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white focus:ring-2 focus:ring-black focus:border-black transition outline-none appearance-none">
-                                    <option value="" disabled selected>Tỉnh / Thành</option>
-                                    <option value="HN">Hà Nội</option>
-                                    <option value="HCM">TP Hồ Chí Minh</option>
-                                    </select>
-                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                                    <i class="fas fa-chevron-down text-xs"></i>
-                                </div>
-                            </div>
-                            <div class="relative">
-                                <select class="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white focus:ring-2 focus:ring-black focus:border-black transition outline-none appearance-none" disabled>
-                                    <option value="" disabled selected>Quận / Huyện</option>
-                                </select>
-                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                                    <i class="fas fa-chevron-down text-xs"></i>
-                                </div>
-                            </div>
-                            <div class="relative">
-                                <select class="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white focus:ring-2 focus:ring-black focus:border-black transition outline-none appearance-none" disabled>
-                                    <option value="" disabled selected>Phường / Xã</option>
-                                </select>
-                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                                    <i class="fas fa-chevron-down text-xs"></i>
-                                </div>
-                            </div>
-                        </div>
 
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Ghi chú đơn hàng (Tùy chọn)</label>
-                            <textarea name="note" rows="2" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-black focus:border-black transition outline-none" placeholder="Ví dụ: Giao hàng giờ hành chính..."></textarea>
-                        </div>
+
+
                     </div>
                 </section>
 
                 <section>
                     <h2 class="text-xl font-semibold text-gray-900 mb-4">Phương thức thanh toán</h2>
                     <div class="flex flex-col space-y-3">
-                        
+
                         <label class="cursor-pointer group relative">
                             <input type="radio" name="payment" value="cod" class="custom-radio sr-only" checked>
                             <div class="border border-gray-300 rounded-lg p-4 flex items-start transition-all hover:border-gray-400">
@@ -169,28 +145,27 @@
 
         <div class="w-full lg:w-2/5 bg-gray-50 border-l border-gray-200 order-1 lg:order-2">
             <div class="px-4 py-8 lg:px-12 lg:py-12 sticky top-0">
-                
+
                 <h2 class="text-lg font-semibold text-gray-900 mb-6 hidden lg:block">Đơn hàng (1 sản phẩm)</h2>
 
                 <?php
-                    foreach($list as $item)
-                    { 
-                        $sum+=$item['price']*$item['qty'];
-                        ?>
-                        <div class="space-y-4 mb-6 pb-6 border-b border-gray-200">
-                           <div class="flex items-center gap-4">
-                               <div class="relative w-16 h-16 border border-gray-200 rounded-lg bg-white p-1">
-                                   <img src="<?= BASE_URL."/image/".$product->getImageById($item['id'])[0]['path'] ?>" alt="Sản phẩm" class="w-full h-full object-cover rounded">
-                                   <span class="absolute -top-2 -right-2 bg-gray-500 text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full"><?= $item['qty'] ?></span>
-                               </div>
-                               <div class="flex-1">
-                                   <h3 class="text-sm font-medium text-gray-900"><?= $item['name'] ?></h3>
-                                   <p class="text-xs text-gray-500 mt-1"><?= $item['description'] ?></p>
-                               </div>
-                               <div class="text-sm font-medium text-gray-900"><?= number_format($item['price']*$item['qty']) ?>₫</div>
-                           </div>
-                       </div>
-                  <?php  }
+                foreach ($list as $item) {
+                    $sum += $item['price'] * $item['qty'];
+                ?>
+                    <div class="space-y-4 mb-6 pb-6 border-b border-gray-200">
+                        <div class="flex items-center gap-4">
+                            <div class="relative w-16 h-16 border border-gray-200 rounded-lg bg-white p-1">
+                                <img src="<?= BASE_URL . "/image/" . $product->getImageById($item['id'])[0]['path'] ?>" alt="Sản phẩm" class="w-full h-full object-cover rounded">
+                                <span class="absolute -top-2 -right-2 bg-gray-500 text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full"><?= $item['qty'] ?></span>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-sm font-medium text-gray-900"><?= $item['name'] ?></h3>
+                                <p class="text-xs text-gray-500 mt-1"><?= $item['description'] ?></p>
+                            </div>
+                            <div class="text-sm font-medium text-gray-900"><?= number_format($item['price'] * $item['qty']) ?>₫</div>
+                        </div>
+                    </div>
+                <?php  }
                 ?>
 
                 <div class="flex gap-2 mb-6 pb-6 border-b border-gray-200">
@@ -223,7 +198,7 @@
 
         radios.forEach(radio => {
             radio.addEventListener('change', function() {
-                if(this.value === 'banking') {
+                if (this.value === 'banking') {
                     bankInfo.classList.remove('hidden');
                 } else {
                     bankInfo.classList.add('hidden');
@@ -232,4 +207,5 @@
         });
     </script>
 </body>
+
 </html>
