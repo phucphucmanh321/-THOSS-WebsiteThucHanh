@@ -264,9 +264,12 @@
                                     });
                                 </script>
 
+
                                 
                                 <script>
-                                    let maxQty = productStock[$("input[name='sideId']:checked").val()] ?? 1;
+                                    let maxQty = 0;  
+
+                                    maxQty = productStock[$("input[name='sideId']:checked").val()] ?? 1;
 
                                     function clampQty(v){
                                         v = parseInt(v);
@@ -297,16 +300,18 @@
                                         }
                                     });
 
-                                    $(".qtyplus").click(function(){
+                                    $(document).on("click", ".qtyplus", function(){
                                         let v = parseInt($("#qty").val()) || 1;
                                         $("#qty").val(clampQty(v + 1));
                                     });
 
-                                    $(".qtyminus").click(function(){
+                                    $(document).on("click", ".qtyminus", function(){
                                         let v = parseInt($("#qty").val()) || 1;
                                         $("#qty").val(clampQty(v - 1));
                                     });
 
+
+                                    // Khi đổi size
                                     $("input[name='sideId']").change(function(){
                                         maxQty = productStock[$(this).val()] ?? 1;
                                         $("#qty").val(1);
@@ -334,6 +339,7 @@
 
 
 
+
                                 <script>
 
                                     function updateStockDisplay(){
@@ -344,10 +350,11 @@
                                         // tồn kho size đó
                                         let stock = productStock[sizeId] ?? 0;
 
+                                        //  CỰC QUAN TRỌNG → GIỚI HẠN maxQty ĐÚNG
+                                        maxQty = stock;
+
                                         // reset số lượng về 1
                                         $('#qty').val( stock > 0 ? 1 : 0 );
-
-                                        maxQty = stock;
 
                                         if(stock < 1){
 
@@ -370,7 +377,7 @@
                                         updateStockDisplay();
                                     });
 
-                                    // ⭐ chạy ngay khi trang load → QUAN TRỌNG
+                                    // chạy ngay khi load trang
                                     $(document).ready(function(){
                                         updateStockDisplay();
                                     });
@@ -382,9 +389,10 @@
 
                                 <div class="form-group form-groupx form-detail-action clearfix "> 
                                     <label class="hidden">Số lượng: </label>
+
                                     <div class="custom custom-btn-number f-left"> 
 
-                                        <span class="qtyminus" onclick="changeQty(-1)">
+                                        <span class="qtyminus">
                                             <i class="fa fa-caret-left"></i>
                                         </span>
 
@@ -392,28 +400,28 @@
                                             id="qty"
                                             name="quantity"
                                             value="1"
-                                            oninput="fixQty()"
-                                            onblur="fixQty()"
                                         />
 
-                                        <span class="qtyplus" onclick="changeQty(1)">
+                                        <span class="qtyplus">
                                             <i class="fa fa-caret-right"></i>
                                         </span>
 
                                     </div>
 
                                     <input type="hidden" name='price' value="<?= $item["price"] ?> " />
-                                    <input type="hidden" name='description' value="<?= $item['description'] ?>" />
-                                    
+                                    <input type="hidden" name='description' value="<?= $item['description'] ?>" />   
                                     <input type="hidden" name='name' value="<?= $item["name"] ?> " />
                                     <input type="hidden" value="<?= $item['id'] ?>" name="id" />
+
                                     <button id="btnAddCart"
                                         type="submit"
                                         class="btn btn-lg btn-primary btn-cart btn-cart2"
                                         title="Cho vào giỏ hàng">
                                         <span>Thêm vào giỏ hàng</span>
                                     </button>
+
                                 </div>
+
                             </form>
                             <div class="popup"></div>
                             <div id="popup-cart"
