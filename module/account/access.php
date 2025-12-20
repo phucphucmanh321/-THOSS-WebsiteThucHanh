@@ -19,5 +19,12 @@ $_SESSION['login-session'] = [
     'userId'   => $myUser['id'],
     'username' => $myUser['username']
 ];
+
+if (isset($_SESSION['cart'])) {
+    $cart = new Cart();
+    $cart->sync($_SESSION['cart'], $myUser['id']);
+    unset($_SESSION['cart']);
+}
+
 $_SESSION['success'] = 'Đăng nhập thành công';
 redirect('index.php?mod=product');
