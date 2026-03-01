@@ -1,18 +1,25 @@
 <?php
-    function addToCart($id, $name, $description, $price, $sizeId, $qty = 1)
-{
-	$size = new Size();
+// Sử dụng hàm postIndex để tránh lỗi Undefined Index nếu dữ liệu từ form bị thiếu
+$id          = postIndex('id');
+$name        = postIndex('name');
+$price       = postIndex('price');
+$sizeId      = postIndex('sizeId');
+$description = postIndex('description');
 
-    // Nếu chưa có giỏ hàng -> tạo mới
+// Kiểm tra linh hoạt cả 'quantity' hoặc 'qty' từ form gửi qua
+$qty = postIndex('quantity', postIndex('qty', 1));
+
+// Hàm xử lý lưu vào Session (giữ nguyên logic của bạn)
+function addToCartSession($id, $name, $description, $price, $sizeId, $qty = 1)
+{
+    $size = new Size();
     if (!isset($_SESSION['cart'])) {
         $_SESSION['cart'] = [];
     }
 
-    // Nếu sản phẩm đã tồn tại -> tăng số lượng
     if (isset($_SESSION['cart'][$id])) {
         $_SESSION['cart'][$id]['qty'] += $qty;
     } else {
-        // Ngược lại -> thêm sản phẩm mới
         $_SESSION['cart'][$id] = [
             'id' => $id,
             'name' => $name,
@@ -25,16 +32,20 @@
             'qty' => $qty
         ];
     }
-    redirect('index.php?mod=cart');
 }
 
+// Chỉ xử lý nếu có ID sản phẩm hợp lệ
+if ($id) {
+    if (isset($_SESSION['login-session'])) {
+        // Nếu đã đăng nhập -> Lưu vào Database
+        $userId = $_SESSION['login-session']['userId'];
+        $cart = new Cart();
+        $cart->add($userId, $id, $qty, $sizeId);
+    } else {
+        // Nếu chưa đăng nhập -> Lưu vào Session
+        addToCartSession($id, $name, $description, $price, $sizeId, $qty);
+    }
+}
 
-    $id    = $_POST['id'];
-    $name  = $_POST['name'];
-    $price = $_POST['price'];
-    $sizeId = $_POST['sizeId'];
-    $description = $_POST['description'];
-    $qty = $_POST['quantity'];
-    addToCart($id, $name, $description, $price, $sizeId, $qty);
-
-?>
+// Chuyển hướng về trang giỏ hàng bằng hàm redirect đã được tối ưu
+redirect('index.php?mod=cart');
